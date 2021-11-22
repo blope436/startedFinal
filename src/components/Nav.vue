@@ -1,4 +1,16 @@
 <script setup>
+import { useRouter } from "vue-router";
+
+import authorize from "../composable/authorize";
+
+const {authStatus, signout} = authorize();
+
+const router = useRouter();
+
+const logoutButton = () => {
+    signout();
+    router.push("/");
+}
 
 </script>
 
@@ -17,9 +29,9 @@
             <router-link to="/contacts"><li class="py-8 px-4 hover:cursor-pointer hover:bg-red-900 hover:text-blue-400 text-xl">Contact</li></router-link>
             <router-link to="/appointments"><li class="py-8 px-4 hover:cursor-pointer hover:bg-red-900 hover:text-blue-400 text-xl">Appointments</li></router-link>
             <router-link to="/login"><li class="py-8 px-4 hover:cursor-pointer hover:bg-red-900 hover:text-blue-400 text-xl">Login</li></router-link>
-            <div class="flex">
+            <div v-if="authStatus == false" class="flex">
             <router-link to="/appointmentInformation"><li class="py-8 px-4 hover:cursor-pointer hover:bg-red-900 hover:text-blue-400 text-xl">Appointment Information</li></router-link>
-            <button><li class="py-8 px-4 hover:cursor-pointer hover:bg-red-900 hover:text-blue-400 text-xl">Logout</li></button>
+            <button @click="logoutButton"><li class="py-8 px-4 hover:cursor-pointer hover:bg-red-900 hover:text-blue-400 text-xl">Logout</li></button>
             </div>
         </ul>
     </nav>

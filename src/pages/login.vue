@@ -1,3 +1,27 @@
+<script setup>
+import {ref} from "vue";
+
+import { useRouter } from "vue-router";
+
+import authorize from "../composable/authorize";
+
+const {authStatus, signin} = authorize();
+
+const router = useRouter();
+
+const submitButton = async () => {
+    await signin(names.value, emails.value)
+    if (authStatus.value)
+    {
+        router.push("/");
+    }
+};
+
+const clear = () => {
+    names.value = "";
+    emails.value = "";
+}
+</script>
 <template>
 <div class="flex items-center justify-center text-red-500 text-5xl text-center bg-gray-500">
 <img class="w-40 h-20" src="/src/assets/loginimage.png" alt="Login Image"/>
@@ -11,16 +35,16 @@
 <div ><img class="h-60 px-80 py-3" src="/src/assets/loginimage2.jpg" alt="Login IMG"></div>
 </div>
 <div class="flex justify-center mx-auto text-red-700">
-    <form class="text-center text-xl space-y-7 py-3 ">
+    <form @submit.prevent="submitButton" class="text-center text-xl space-y-7 py-3 ">
         <img class="h-10 rounded-lg mx-auto" src="/src/assets/loginicon.png" alt="Name"/>
-        <input name="name" type="text" class="rounded-lg border-4" placeholder="Enter Full Name" v-model="name"/>
+        <input required id="names" name="names" type="text" class="rounded-lg border-4" placeholder="Enter Full Name" v-model="names"/>
         <div>
         <img class="h-10 rounded-lg mx-auto" src="/src/assets/email.jpg" alt="Name"/>
-        <input name="email" type="text" class="rounded-lg border-4" placeholder="Enter Email Address" v-model="email"/>
+        <input required id="emails" name="emails" type="text" class="rounded-lg border-4" placeholder="Enter Email Address" v-model="emails"/>
         </div>
         <div class="space-x-2">
-        <button class="bg-blue-500 text-black">Submit</button>
-        <button class="bg-red-500 text-black">Cancel</button>
+        <button @submit.prevent="submitButton" class="bg-blue-500 text-black">Submit</button>
+        <button @click="clear()" class="bg-red-500 text-black">Cancel</button>
         </div>
     </form>
 </div>
